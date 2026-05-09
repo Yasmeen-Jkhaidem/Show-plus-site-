@@ -24,7 +24,7 @@
       <div class="background-overlay"></div>
       <div class="container">
         <nav>
-          <a href="#">
+          <a href="/">
             <img src="./assets/images/logo-black.svg" alt="Show Plus Logo" />
           </a>
 
@@ -37,19 +37,23 @@
 
           <!-- لفّ القائمة -->
           <div class="nav-menu" id="navMenu">
+            <a href="/">
+              <img src="./assets/images/logo-black.svg" alt="Show Plus Logo" />
+            </a>
             <ul>
+              <li class="active"><a href="/">الرئيسة</a></li>
               <li><a href="./pages/how-it-works.html">كيف تعمل المنصة؟</a></li>
-              <li><a href="#">المميزات</a></li>
-              <li><a href="#">التكاملات</a></li>
               <li><a href="./pages/pricing.html">الأسعار</a></li>
+              <!-- <li><a href="#">المميزات</a></li>
+              <li><a href="#">التكاملات</a></li>
               <li><a href="#">قصص النجاح</a></li>
               <li><a href="#">الشراكات</a></li>
               <li><a href="#">المدونة</a></li>
               <li><a href="#">من نحن؟</a></li>
-              <li><a href="#">تواصل معنا</a></li>
+              <li><a href="#">تواصل معنا</a></li> -->
             </ul>
 
-            <button class="secondary-btn">تسجيل الدخول</button>
+            <button id="login-cta" class="secondary-btn">تسجيل الدخول</button>
           </div>
         </nav>
 
@@ -76,15 +80,15 @@
                 </svg>
               </div>
               <p>
-                شو بلس — منصة Live Commerce المتكاملة للتجار في السعودية
-                والخليج. بث مباشر + متجرك + مبيعات حقيقية في شاشة واحدة.
+                أطلق بثًا مباشرًا تفاعليًا داخل متجرك، واسمح للعملاء بالشراء
+                أثناء المشاهدة بدون مغادرة البث.
               </p>
             </div>
             <div class="hero-column">
               <div class="hero-actions">
                 <a href="#"
                   ><button type="button" class="primary-btn">
-                    جرّب مجانًا — سجل الآن
+                    ابدأ تجربتك المجانية الآن
                   </button></a
                 >
                 <a href="#"
@@ -101,7 +105,7 @@
                         fill="#A32829"
                       />
                     </svg>
-                    شاهد كيف يعمل
+                    طلب عرض توضيحي
                   </button></a
                 >
               </div>
@@ -135,7 +139,7 @@
                       fill="#1E7A35"
                     />
                   </svg>
-                  يتكامل مع سلة وزد
+                  يتكامل مع متجرك
                 </div>
 
                 <div class="trigger">
@@ -151,7 +155,7 @@
                       fill="#1E7A35"
                     />
                   </svg>
-                  إعداد في أقل من 10 دقائق
+                  ابدأ خلال دقائق
                 </div>
               </div>
             </div>
@@ -182,7 +186,7 @@
 
           <div class="trigger-text">
             <h3>+500</h3>
-            <p>تاجر نشط</p>
+            <p>تاجر مهتم</p>
           </div>
         </div>
 
@@ -201,8 +205,8 @@
           </svg>
 
           <div class="trigger-text">
-            <h3>تكامل</h3>
-            <p>مع سلة وزد</p>
+            <h3>يتكامل</h3>
+            <p>مع متجرك</p>
           </div>
         </div>
 
@@ -241,19 +245,56 @@
           </svg>
 
           <div class="trigger-text">
-            <h3>إعداد سريع</h3>
-            <p>أقل من 10 دقائق</p>
+            <h3>جاهز</h3>
+            <p>خلال دقائق</p>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="how-it-works primary-section">
+    <div class="how-it-works primary-section has-logo">
       <div class="container">
-        <h2 class="section-heading">كيف يعمل شو بلس؟</h2>
+        <h2 class="section-heading">
+          كيف يعمل
+          <svg
+            width="256"
+            height="64"
+            viewBox="0 0 256 64"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M103.64 37.5401V62.7801H135.26L152.307 47.6067V20.8801H120.687L103.64 37.5401ZM139.62 51.5934H116.68V31.9934H139.62V51.5934Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M71.0733 43.1733H82.2267V62.78H95.0733V45.8533L77.8733 30.4867H70.9933V6.67334H57.9267V62.78H71.0733V43.1733Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M209.46 51.5933H198.04V20.8867H185.213V47.18L190.18 51.5933H174.053V20.8867H160.9V47.24L178.413 62.78H193.66V54.68L202.72 62.78H209.227H217.647H222.3V20.8867H209.46V51.5933Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M0.666656 23.6867V30.46V38.9333V43.1467H36.6467V50.06H0.666656V62.78H32.2867L49.3333 47.6267V30.46H36.94H36.2667H13.7333V19.3333H49.3333V6.64667H19.82L0.666656 23.6867Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M234.553 32.9067H242.48V22.26L231.827 12.72H222.293V20.8867H234.553V32.9067Z"
+              fill="#FF4244"
+            />
+            <path
+              d="M242.487 12.6867V0.666687H234.553V10.2L246.487 20.8534H254.74V12.6867H242.487Z"
+              fill="#FF4244"
+            />
+          </svg>
+          ؟
+        </h2>
         <div class="steps-row">
           <div class="step-card">
-            <div class="image-container"></div>
+            <div class="image-container">
+              <img src="./assets/images/how-image-1.png" alt="A man starting a live stream" />
+            </div>
             <div class="step-text">
               <h4>1. ابدأ البث المباشر</h4>
               <p>ابدأ الجلسة من تطبيق شو بلس  بدون إعداد تقني معقد.</p>
@@ -261,40 +302,72 @@
           </div>
 
           <div class="step-card">
-            <div class="image-container"></div>
+            <div class="image-container">
+              <img src="./assets/images/how-image-2.png" alt="A man showcasing products" />
+            </div>
             <div class="step-text">
-              <h4>2. المشاهد يشتري مباشرةً</h4>
-              <p>
-                يظهر كارت المنتج على شاشة المشاهد تلقائياً — اختار + ادفع
-                بنقرتين بدون مغادرة البث.
-              </p>
+              <h4>2. اعرض منتجاتك</h4>
+              <p>تظهر المنتجات للمشاهد أثناء البث مع إمكانية الشراء فورًا.</p>
             </div>
           </div>
 
           <div class="step-card">
-            <div class="image-container"></div>
+            <div class="image-container">
+              <img src="./assets/images/how-image-3.png" alt="A man analyzing performance" />
+            </div>
             <div class="step-text">
-              <h4>3. تحليل وتحسين</h4>
-              <p>
-                بعد كل جلسة، تحصل على تقرير كامل: من اشترى، ماذا شاهد، وكيف
-                تُحسّن جلستك القادمة.
-              </p>
+              <h4>3. حلّل الأداء</h4>
+              <p>تابع الطلبات والتفاعل بعد كل جلسة.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="features primary-section">
+    <div class="features primary-section has-logo">
       <div class="container">
-        <h2 class="section-heading">المميزات</h2>
+        <h2 class="section-heading">
+          مميزات
+          <svg
+            width="256"
+            height="64"
+            viewBox="0 0 256 64"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M103.64 37.5401V62.7801H135.26L152.307 47.6067V20.8801H120.687L103.64 37.5401ZM139.62 51.5934H116.68V31.9934H139.62V51.5934Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M71.0733 43.1733H82.2267V62.78H95.0733V45.8533L77.8733 30.4867H70.9933V6.67334H57.9267V62.78H71.0733V43.1733Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M209.46 51.5933H198.04V20.8867H185.213V47.18L190.18 51.5933H174.053V20.8867H160.9V47.24L178.413 62.78H193.66V54.68L202.72 62.78H209.227H217.647H222.3V20.8867H209.46V51.5933Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M0.666656 23.6867V30.46V38.9333V43.1467H36.6467V50.06H0.666656V62.78H32.2867L49.3333 47.6267V30.46H36.94H36.2667H13.7333V19.3333H49.3333V6.64667H19.82L0.666656 23.6867Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M234.553 32.9067H242.48V22.26L231.827 12.72H222.293V20.8867H234.553V32.9067Z"
+              fill="#FF4244"
+            />
+            <path
+              d="M242.487 12.6867V0.666687H234.553V10.2L246.487 20.8534H254.74V12.6867H242.487Z"
+              fill="#FF4244"
+            />
+          </svg>
+        </h2>
         <div class="features-columns">
           <div class="col col-1">
             <div class="feature-card red">
-              <h3>نافذة مدمجة في متجرك</h3>
+              <h3>تجربة شراء داخل متجرك</h3>
               <p>
-                المشاهد يشتري بدون مغادرة صفحة متجرك على سلة أو زد — لا
-                friction، لا خسارة عملاء.
+                اسمح للعملاء بالشراء أثناء البث بدون مغادرة متجرك أو تشتيت تجربة
+                التسوق.
               </p>
               <img src="./assets/images/window.png" alt="Integrated Window" />
             </div>
@@ -302,8 +375,8 @@
             <div class="feature-card blue">
               <h3>تكامل فوري مع سلة وزد</h3>
               <p>
-                ربط متجرك في أقل من 10 دقائق — المنتجات والمخزون والطلبات تتزامن
-                تلقائيًا.
+                اربط متجرك وابدأ البيع المباشر خلال دقائق مع مزامنة تلقائية
+                للمنتجات والطلبات.
               </p>
               <img
                 src="./assets/images/link.png"
@@ -314,26 +387,26 @@
 
           <div class="col col-2">
             <div class="feature-card yellow">
-              <h3>تقارير حية لكل جلسة</h3>
+              <h3>تقارير مباشرة لكل بث</h3>
               <p>
-                إيراد + طلبات + مشاهدون + معدل تحويل — كل شيء في لوحة تحكم واحدة
-                بعد كل جلسة.
+                تابع الطلبات، المشاهدات، والتفاعل من لوحة تحكم واحدة بعد كل بث
+                مباشر.
               </p>
               <img src="./assets/images/chart.png" alt="Live Reports" />
             </div>
 
             <div class="feature-card orange">
-              <h3>بياناتك ملكك أنت</h3>
+              <h3>بيانات عملائك محفوظة لديك</h3>
               <p>
-                كل عميل اشترى عبر بثك يُضاف لقاعدة بياناتك  لا يُشارَك مع أي
-                طرف.
+                جميع بيانات العملاء والطلبات تبقى داخل متجرك وتحت إدارتك
+                بالكامل.
               </p>
               <img src="./assets/images/lock.png" alt="Data Ownership" />
             </div>
 
             <div class="feature-card green">
-              <h3>دعم متخصص لجلسات البث</h3>
-              <p>فريق دعم يفهم البث المباشر — لا انقطاع في اللحظات الحرجة.</p>
+              <h3>دعم مخصص للبث المباشر</h3>
+              <p>فريق دعم جاهز لمساعدتك أثناء جلسات البث لضمان تجربة سلسة.</p>
               <img src="./assets/images/energy.png" alt="Specialized Support" />
             </div>
           </div>
@@ -341,18 +414,52 @@
       </div>
     </div>
 
-    <section class="comparison-section primary-section">
+    <section class="comparison-section primary-section has-logo">
       <div class="container">
         <h2 class="section-heading">
-          لماذا لايف شو <br />
-          وليس لايف الانستغرام؟
+          <span class="row-one">
+            لماذا لايف
+            <svg
+              width="256"
+              height="64"
+              viewBox="0 0 256 64"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M103.64 37.5401V62.7801H135.26L152.307 47.6067V20.8801H120.687L103.64 37.5401ZM139.62 51.5934H116.68V31.9934H139.62V51.5934Z"
+                fill="#0F0F0E"
+              />
+              <path
+                d="M71.0733 43.1733H82.2267V62.78H95.0733V45.8533L77.8733 30.4867H70.9933V6.67334H57.9267V62.78H71.0733V43.1733Z"
+                fill="#0F0F0E"
+              />
+              <path
+                d="M209.46 51.5933H198.04V20.8867H185.213V47.18L190.18 51.5933H174.053V20.8867H160.9V47.24L178.413 62.78H193.66V54.68L202.72 62.78H209.227H217.647H222.3V20.8867H209.46V51.5933Z"
+                fill="#0F0F0E"
+              />
+              <path
+                d="M0.666656 23.6867V30.46V38.9333V43.1467H36.6467V50.06H0.666656V62.78H32.2867L49.3333 47.6267V30.46H36.94H36.2667H13.7333V19.3333H49.3333V6.64667H19.82L0.666656 23.6867Z"
+                fill="#0F0F0E"
+              />
+              <path
+                d="M234.553 32.9067H242.48V22.26L231.827 12.72H222.293V20.8867H234.553V32.9067Z"
+                fill="#FF4244"
+              />
+              <path
+                d="M242.487 12.6867V0.666687H234.553V10.2L246.487 20.8534H254.74V12.6867H242.487Z"
+                fill="#FF4244"
+              />
+            </svg>
+          </span>
+          <span class="row-two">بدل البث التقليدي؟</span>
         </h2>
 
         <div class="comparison-table-wrapper">
           <table class="comparison-table">
             <thead>
               <tr class="comparison-header-row">
-                <th class="comparison-header">المعيار</th>
+                <th class="comparison-header"></th>
                 <th class="comparison-header">
                   البث المباشر في TikTok، Instagram
                 </th>
@@ -462,6 +569,7 @@
               </tr>
             </tbody>
           </table>
+          <button class="primary-btn">جرب الفرق بنفسك الآن</button>
         </div>
       </div>
     </section>
@@ -583,28 +691,97 @@
       </div>
     </div>
 
-    <div class="partners">
+    <div class="partners has-logo">
       <div class="container">
         <img src="./assets/images/partners.png" alt="Partners Logos" />
         <div class="partners-text">
           <h2 class="section-heading">
-            يتصل شو بلس بأدواتك <br />الحالية مباشرة
+            <div class="row-one">يتكامل متجرك مع</div>
+            <div class="row-two">
+              <svg
+                width="256"
+                height="64"
+                viewBox="0 0 256 64"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M103.64 37.5401V62.7801H135.26L152.307 47.6067V20.8801H120.687L103.64 37.5401ZM139.62 51.5934H116.68V31.9934H139.62V51.5934Z"
+                  fill="#0F0F0E"
+                />
+                <path
+                  d="M71.0733 43.1733H82.2267V62.78H95.0733V45.8533L77.8733 30.4867H70.9933V6.67334H57.9267V62.78H71.0733V43.1733Z"
+                  fill="#0F0F0E"
+                />
+                <path
+                  d="M209.46 51.5933H198.04V20.8867H185.213V47.18L190.18 51.5933H174.053V20.8867H160.9V47.24L178.413 62.78H193.66V54.68L202.72 62.78H209.227H217.647H222.3V20.8867H209.46V51.5933Z"
+                  fill="#0F0F0E"
+                />
+                <path
+                  d="M0.666656 23.6867V30.46V38.9333V43.1467H36.6467V50.06H0.666656V62.78H32.2867L49.3333 47.6267V30.46H36.94H36.2667H13.7333V19.3333H49.3333V6.64667H19.82L0.666656 23.6867Z"
+                  fill="#0F0F0E"
+                />
+                <path
+                  d="M234.553 32.9067H242.48V22.26L231.827 12.72H222.293V20.8867H234.553V32.9067Z"
+                  fill="#FF4244"
+                />
+                <path
+                  d="M242.487 12.6867V0.666687H234.553V10.2L246.487 20.8534H254.74V12.6867H242.487Z"
+                  fill="#FF4244"
+                />
+              </svg>
+              بسهولة
+            </div>
           </h2>
           <p>لا تغيير في طريقة عملك، فقط نتائج أفضل</p>
         </div>
       </div>
     </div>
 
-    <div class="target-audience primary-section">
+    <div class="target-audience primary-section has-logo">
       <div class="container">
-        <h2 class="section-heading">لمن شو بلس؟</h2>
+        <h2 class="section-heading">
+          هل
+          <svg
+            width="256"
+            height="64"
+            viewBox="0 0 256 64"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M103.64 37.5401V62.7801H135.26L152.307 47.6067V20.8801H120.687L103.64 37.5401ZM139.62 51.5934H116.68V31.9934H139.62V51.5934Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M71.0733 43.1733H82.2267V62.78H95.0733V45.8533L77.8733 30.4867H70.9933V6.67334H57.9267V62.78H71.0733V43.1733Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M209.46 51.5933H198.04V20.8867H185.213V47.18L190.18 51.5933H174.053V20.8867H160.9V47.24L178.413 62.78H193.66V54.68L202.72 62.78H209.227H217.647H222.3V20.8867H209.46V51.5933Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M0.666656 23.6867V30.46V38.9333V43.1467H36.6467V50.06H0.666656V62.78H32.2867L49.3333 47.6267V30.46H36.94H36.2667H13.7333V19.3333H49.3333V6.64667H19.82L0.666656 23.6867Z"
+              fill="#0F0F0E"
+            />
+            <path
+              d="M234.553 32.9067H242.48V22.26L231.827 12.72H222.293V20.8867H234.553V32.9067Z"
+              fill="#FF4244"
+            />
+            <path
+              d="M242.487 12.6867V0.666687H234.553V10.2L246.487 20.8534H254.74V12.6867H242.487Z"
+              fill="#FF4244"
+            />
+          </svg>
+          مناسب لك؟
+        </h2>
         <div class="targets-container">
           <div class="target">
             <img src="./assets/images/3d-store.png" alt="3D Store Icon" />
-            <h4 class="target-title">تاجر سلة أو زد</h4>
+            <h4 class="target-title">تاجر جديد</h4>
             <p class="target-description">
-              تبيع منتجاتك على سلة أو زد وتريد تضاعف مبيعاتك من جلسات البث
-              المباشر؟ شو بلس صُنع لك.
+              ابدأ أول تجربة بيع مباشر بسهولة ومن دون تعقيد.
             </p>
           </div>
 
@@ -613,10 +790,9 @@
               src="./assets/images/3d-instagram.png"
               alt="3D Instagram Icon"
             />
-            <h4 class="target-title">تاجر يبث على إنستغرام</h4>
+            <h4 class="target-title">تبيع عبر إنستغرام أو تيكتوك</h4>
             <p class="target-description">
-              تبث أسبوعيًا على إنستغرام لكن المبيعات لا تتناسب مع الجهد؟ الحل في
-              مسار الشراء لا في الجمهور.
+              حوّل المشاهدات إلى طلبات مباشرة داخل متجرك.
             </p>
           </div>
 
@@ -637,15 +813,12 @@
         <img src="./assets/images/users-sample.png" alt="Show Plus Users" />
         <div class="trigger-text">
           <h2>
-            ابدأ مجانًا — لا بطاقة ائتمان مطلوبة<br />
-            <div class="highlighted-text">جلستك الأولى خلال 10 دقائق</div>
+            ابدأ مجانًا لا بطاقة ائتمان مطلوبة<br />
+            <div class="highlighted-text">ابدأ أول بث مباشر خلال دقائق</div>
           </h2>
-          <p class="trigger-link">
-            خطط مدفوعة للتجار المحترفين — <a href="#">عرض الخطط</a>
-          </p>
           <a href="#"
             ><button type="button" class="primary-btn">
-              ابدأ تجربتك المجانية
+              طلب عرض توضيحي
             </button></a
           >
         </div>
@@ -656,9 +829,7 @@
       <div class="container">
         <div class="content-column">
           <h2 class="section-heading">جاهز لتضاعف مبيعاتك؟</h2>
-          <p>
-            انضم لأكثر من 500 تاجر يستخدمون شو بلس لتحويل جمهورهم إلى مشترين
-          </p>
+          <p>انضم إلى التجار الذين بدأوا البيع المباشر مع +Show</p>
         </div>
         <div class="actions-row">
           <a href="#"
@@ -684,7 +855,8 @@
               class="footer-logo"
             />
             <p class="footer-desc">
-              حول متجرك إلى تجربة بث مباشر خلال دقائق واحصل على ربح فوري!
+              اربط متجرك وابدأ البيع المباشر خلال دقائق مع مزامنة تلقائية
+              للمنتجات والطلبات.
             </p>
             <div class="footer-socials">
               <a href="#" aria-label="Facebook" class="footer-social"

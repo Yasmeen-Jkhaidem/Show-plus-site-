@@ -252,4 +252,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updatePrices("monthly");
   }
+
+  const sections = document.querySelectorAll(`
+  .main-home,
+  .triggers-container,
+  .how-it-works.primary-section,
+  .features.primary-section,
+  .comparison-section.primary-section,
+  .testimonials.primary-section,
+  .partners,
+  .target-audience.primary-section,
+  .users-trigger.primary-section,
+  .trigger-section.primary-section,
+  footer.site-footer
+`);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("section-in-view");
+
+          // stop observing after reveal
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.15,
+    },
+  );
+
+  sections.forEach((section) => {
+    observer.observe(section);
+  });
 });
