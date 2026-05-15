@@ -87,45 +87,171 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* =========================
-   Testimonials Slider
-========================= */
+   Testimonials Slider — True Infinite Loop
+  ========================= */
   const slider = document.querySelector(".testimonials-slider");
   const prevBtn = document.querySelector(".slider-prev");
   const nextBtn = document.querySelector(".slider-next");
 
   if (slider && prevBtn && nextBtn) {
-    const card = slider.querySelector(".testimonial-card");
-    if (!card) return;
-
     const gap = 24;
-    const getScrollAmount = () => card.offsetWidth + gap;
+    const isRTL = () => !document.body.classList.contains("ltr");
+    const AUTO_SCROLL_DELAY = 3000;
 
-    let isDragging = false;
-    let startX = 0;
-    let scrollLeft = 0;
+    const originalCards = Array.from(
+      slider.querySelectorAll(".testimonial-card"),
+    );
 
-    // RTL-aware button logic:
-    // In RTL, "prev" (right arrow) scrolls LEFT (negative), "next" (left arrow) scrolls RIGHT (positive)
+    // --- Clone a full set BEFORE and AFTER the originals ---
+    originalCards.forEach((card) => {
+      const cloneAfter = card.cloneNode(true);
+      cloneAfter.setAttribute("aria-hidden", "true");
+      slider.appendChild(cloneAfter);
+    });
+
+    [...originalCards].reverse().forEach((card) => {
+      const cloneBefore = card.cloneNode(true);
+      cloneBefore.setAttribute("aria-hidden", "true");
+      slider.prepend(cloneBefore);
+    });
+
+    const getCardWidth = () => {
+      const card = slider.querySelector(".testimonial-card");
+      return card ? card.offsetWidth + gap : 0;
+    };
+
+    // --- Jump to the middle set silently on init ---
+    const jumpToMiddle = (animate = false) => {
+      const setWidth = originalCards.length * getCardWidth();
+      slider.style.scrollBehavior = "auto";
+
+      if (isRTL()) {
+        slider.scrollLeft = -setWidth;
+      } else {
+        slider.scrollLeft = setWidth;
+      }
+
+      if (animate) {
+        requestAnimationFrame(() => {
+          slider.style.scrollBehavior = "";
+        });
+      }
+    };
+
+    // --- Seamless loop: when entering clone zone, silently jump to real equivalent ---
+    let isSyncing = false;
+
+    const syncLoop = () => {
+      if (isSyncing) return;
+
+      const setWidth = originalCards.length * getCardWidth();
+      const scroll = slider.scrollLeft;
+
+      let jumped = false;
+
+      if (isRTL()) {
+        // RTL scrollLeft: 0 = far right, negative = scrolled left
+        // Clones before: scrollLeft > 0 (right of origin)
+        // Clones after:  scrollLeft < -setWidth * 2 (too far left)
+        if (scroll > 0) {
+          // Entered right clones (before-set) → jump to real equivalent in middle
+          isSyncing = true;
+          slider.style.scrollBehavior = "auto";
+          slider.scrollLeft = scroll - setWidth;
+          jumped = true;
+        } else if (scroll < -(setWidth * 2 - getCardWidth())) {
+          // Entered left clones (after-set) → jump to real equivalent in middle
+          isSyncing = true;
+          slider.style.scrollBehavior = "auto";
+          slider.scrollLeft = scroll + setWidth;
+          jumped = true;
+        }
+      } else {
+        // LTR: 0 = far left, positive = scrolled right
+        // Clones before: scrollLeft < 0
+        // Clones after:  scrollLeft > setWidth * 2
+        if (scroll < getCardWidth() * 0.5) {
+          // Entered left clones (before-set) → jump to real equivalent in middle
+          isSyncing = true;
+          slider.style.scrollBehavior = "auto";
+          slider.scrollLeft = scroll + setWidth;
+          jumped = true;
+        } else if (scroll > setWidth * 2 - getCardWidth() * 0.5) {
+          // Entered right clones (after-set) → jump to real equivalent in middle
+          isSyncing = true;
+          slider.style.scrollBehavior = "auto";
+          slider.scrollLeft = scroll - setWidth;
+          jumped = true;
+        }
+      }
+
+      if (jumped) {
+        requestAnimationFrame(() => {
+          slider.style.scrollBehavior = "";
+          isSyncing = false;
+        });
+      }
+    };
+
+    // --- Scroll forward (next) ---
+    const scrollNext = () => {
+      const dir = isRTL() ? -1 : 1;
+      slider.scrollBy({ left: getCardWidth() * dir, behavior: "smooth" });
+    };
+
+    // --- Scroll backward (prev) ---
+    const scrollPrev = () => {
+      const dir = isRTL() ? 1 : -1;
+      slider.scrollBy({ left: getCardWidth() * dir, behavior: "smooth" });
+    };
+
+    // --- Auto-scroll ---
+    let autoScrollTimer = null;
+
+    const startAutoScroll = () => {
+      stopAutoScroll();
+      autoScrollTimer = setInterval(scrollNext, AUTO_SCROLL_DELAY);
+    };
+
+    const stopAutoScroll = () => {
+      clearInterval(autoScrollTimer);
+      autoScrollTimer = null;
+    };
+
+    // --- Buttons ---
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
+
     prevBtn.addEventListener("click", () => {
-      slider.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+      scrollPrev();
+      startAutoScroll();
     });
 
     nextBtn.addEventListener("click", () => {
-      slider.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+      scrollNext();
+      startAutoScroll();
     });
 
-    // Drag (Desktop)
+    // --- Drag (Desktop) ---
+    let isDragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+
     slider.addEventListener("mousedown", (e) => {
       isDragging = true;
       slider.classList.add("dragging");
       startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
+      startScrollLeft = slider.scrollLeft;
+      stopAutoScroll();
     });
 
     ["mouseleave", "mouseup"].forEach((event) => {
       slider.addEventListener(event, () => {
-        isDragging = false;
-        slider.classList.remove("dragging");
+        if (isDragging) {
+          isDragging = false;
+          slider.classList.remove("dragging");
+          startAutoScroll();
+        }
       });
     });
 
@@ -133,36 +259,37 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!isDragging) return;
       e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      slider.scrollLeft = scrollLeft - walk;
+      slider.scrollLeft = startScrollLeft - (x - startX) * 1.5;
     });
 
-    // Touch (Mobile)
+    // --- Touch (Mobile) ---
     slider.addEventListener("touchstart", (e) => {
       startX = e.touches[0].pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
+      startScrollLeft = slider.scrollLeft;
+      stopAutoScroll();
     });
+
+    slider.addEventListener("touchend", () => startAutoScroll());
 
     slider.addEventListener("touchmove", (e) => {
       const x = e.touches[0].pageX - slider.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      slider.scrollLeft = scrollLeft - walk;
+      slider.scrollLeft = startScrollLeft - (x - startX) * 1.5;
     });
 
-    // RTL-aware disabled state
-    // In RTL, scrollLeft is 0 when scrolled fully to the RIGHT (start), and negative when scrolled left
-    const updateButtons = () => {
-      const maxScroll = slider.scrollWidth - slider.clientWidth;
-      const currentScroll = Math.abs(slider.scrollLeft); // normalize negative RTL values
+    // --- Pause on hover ---
+    slider.addEventListener("mouseenter", stopAutoScroll);
+    slider.addEventListener("mouseleave", () => {
+      if (!isDragging) startAutoScroll();
+    });
 
-      prevBtn.disabled = currentScroll <= 0; // at start (rightmost) → prev disabled
-      nextBtn.disabled = currentScroll >= maxScroll - 1; // at end (leftmost) → next disabled
-    };
+    // --- Sync on scroll ---
+    slider.addEventListener("scroll", syncLoop);
 
-    slider.addEventListener("scroll", updateButtons);
-
-    // Small delay so the DOM is fully rendered before calculating
-    setTimeout(updateButtons, 100);
+    // --- Init: start at the middle set ---
+    setTimeout(() => {
+      jumpToMiddle();
+      startAutoScroll();
+    }, 100);
   }
 
   /* =========================
@@ -285,5 +412,117 @@ document.addEventListener("DOMContentLoaded", function () {
 
   sections.forEach((section) => {
     observer.observe(section);
+  });
+
+  /* =========================
+     Screenshots Column Cards
+  ========================= */
+  
+  // ─── Card data ───────────────────────────────────────────
+  // Replace `emoji` + `bg` with a real image src in production.
+  const cards = [
+    {
+      bg: "#1e3a5f",
+      emoji: "🛒",
+      name: "متجر الأناقة",
+      sub: "عرض مباشر",
+      viewers: "1,204",
+    },
+    {
+      bg: "#3a1e1e",
+      emoji: "💎",
+      name: "جواهر رويال",
+      sub: "تخفيضات حصرية",
+      viewers: "987",
+    },
+    {
+      bg: "#1e3a2a",
+      emoji: "🤖",
+      name: "تقنية وروبوت",
+      sub: "أحدث المنتجات",
+      viewers: "643",
+    },
+    {
+      bg: "#3a2d1e",
+      emoji: "🎮",
+      name: "عالم الألعاب",
+      sub: "إطلاق جديد",
+      viewers: "2,115",
+    },
+    {
+      bg: "#2d1e3a",
+      emoji: "👗",
+      name: "أزياء 2025",
+      sub: "أسبوع الموضة",
+      viewers: "1,560",
+    },
+    {
+      bg: "#1e2a3a",
+      emoji: "📱",
+      name: "إلكترونيات برو",
+      sub: "عروض حية",
+      viewers: "834",
+    },
+    {
+      bg: "#3a1e2d",
+      emoji: "🌸",
+      name: "عطور فاخرة",
+      sub: "كولكشن جديد",
+      viewers: "421",
+    },
+    {
+      bg: "#2a3a1e",
+      emoji: "🏋️",
+      name: "فتنس لايف",
+      sub: "تدريب مباشر",
+      viewers: "1,078",
+    },
+    {
+      bg: "#3a3a1e",
+      emoji: "🎨",
+      name: "فن وإبداع",
+      sub: "ورشة مباشرة",
+      viewers: "356",
+    },
+  ];
+
+  // Which cards go in each column
+  const columnData = [
+    [cards[0], cards[1], cards[2], cards[3]],
+    [cards[4], cards[5], cards[6], cards[7]],
+    [cards[8], cards[0], cards[3], cards[5]],
+  ];
+
+  // ─── Build a single card's HTML ──────────────────────────
+  function buildCard(card) {
+    return `
+        <div class="ss-card">
+          <div class="ss-card-img" style="background: ${card.bg};">${card.emoji}</div>
+          <div class="ss-card-overlay"></div>
+          <div class="ss-card-info">
+            <div class="live-badge">
+              <span class="live-dot"></span>
+              مباشر
+            </div>
+            <p class="card-name">${card.name}</p>
+            <p class="card-sub">${card.sub}</p>
+            <p class="card-viewers">${card.viewers} مشاهد</p>
+          </div>
+        </div>
+      `;
+  }
+
+  // ─── Render columns ──────────────────────────────────────
+  const container = document.getElementById("screenshots-column");
+
+  columnData.forEach((colCards) => {
+    const col = document.createElement("div");
+    col.className = "ss-col";
+
+    // Duplicate cards so the loop is seamless
+    const doubled = [...colCards, ...colCards];
+    col.innerHTML = doubled.map(buildCard).join("");
+
+    container.appendChild(col);
   });
 });
