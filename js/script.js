@@ -75,14 +75,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.getElementById("overlay");
 
   if (menuToggle && navMenu && overlay) {
+    const setMenuState = (isOpen) => {
+      navMenu.classList.toggle("active", isOpen);
+      overlay.classList.toggle("active", isOpen);
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    };
+
     menuToggle.addEventListener("click", () => {
-      navMenu.classList.toggle("active");
-      overlay.classList.toggle("active");
+      setMenuState(!navMenu.classList.contains("active"));
     });
 
     overlay.addEventListener("click", () => {
-      navMenu.classList.remove("active");
-      overlay.classList.remove("active");
+      setMenuState(false);
     });
   }
 
@@ -299,43 +303,44 @@ document.addEventListener("DOMContentLoaded", function () {
     ".pricing-billing-toggle .billing-btn",
   );
   const pricingCards = document.querySelectorAll(".pricing-card");
-
   if (billingButtons.length && pricingCards.length) {
+    const isLTR = document.body.classList.contains("ltr");
+
     const pricingValues = {
       monthly: {
-        starter: "مجانًا",
+        starter: isLTR ? "Free" : "مجانًا",
         pro: 299,
-        enterprise: "مخصص",
+        enterprise: isLTR ? "Custom" : "مخصص",
       },
       yearly: {
-        starter: "مجانًا",
+        starter: isLTR ? "Free" : "مجانًا",
         pro: 2990,
-        enterprise: "مخصص",
+        enterprise: isLTR ? "Custom" : "مخصص",
       },
+    };
+
+    const unitLabels = {
+      monthly: isLTR ? "/ month" : "/ شهرياً",
+      yearly: isLTR ? "/ year" : "/ سنوياً",
     };
 
     function createCurrencySVG() {
       const svgNS = "http://www.w3.org/2000/svg";
-
       const svg = document.createElementNS(svgNS, "svg");
       svg.setAttribute("viewBox", "0 0 21 24");
       svg.classList.add("currency-icon");
-
       const path1 = document.createElementNS(svgNS, "path");
       path1.setAttribute(
         "d",
         "M13.0694 21.2613C12.6947 22.1109 12.4469 23.033 12.3521 24L20.2823 22.2762C20.657 21.4267 20.9046 20.5044 20.9996 19.5375L13.0694 21.2613Z",
       );
-
       const path2 = document.createElementNS(svgNS, "path");
       path2.setAttribute(
         "d",
         "M20.2822 17.1119C20.6569 16.2624 20.9046 15.3401 20.9995 14.3732L14.8221 15.7167V13.134L20.282 11.9476C20.6567 11.0981 20.9044 10.1758 20.9993 9.20886L14.8219 10.5512V1.26324C13.8753 1.8067 13.0347 2.53011 12.3514 3.38341V11.0883L9.8808 11.6253V0C8.93424 0.543271 8.09359 1.26687 7.41024 2.12017V12.1621L1.88236 13.3632C1.50762 14.2127 1.25973 15.135 1.16464 16.1019L7.41024 14.7447V17.9971L0.71686 19.4515C0.34212 20.301 0.0944109 21.2233 -0.000488281 22.1903L7.00561 20.6678C7.57594 20.5465 8.06613 20.2017 8.38483 19.7272L9.6697 17.7793C9.80309 17.5774 9.8808 17.3344 9.8808 17.0727V14.2078L12.3514 13.6708V18.8361L20.282 17.1115Z",
       );
-
       svg.appendChild(path1);
       svg.appendChild(path2);
-
       return svg;
     }
 
@@ -346,24 +351,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const plan = card.dataset.plan;
         const amount = card.querySelector(".pricing-amount");
         const unit = card.querySelector(".pricing-unit");
-
         if (!amount) return;
-
         const value = pricingValues[billing][plan];
         amount.innerHTML = "";
-
         if (typeof value === "number") {
           const text = document.createElement("span");
           text.textContent = formatter.format(value);
-
           amount.appendChild(text);
           amount.appendChild(createCurrencySVG());
         } else {
           amount.textContent = value;
         }
-
         if (plan === "pro" && unit) {
-          unit.textContent = billing === "monthly" ? "/ شهرياً" : "/ سنوياً";
+          unit.textContent = unitLabels[billing];
         }
       });
     };
@@ -371,7 +371,6 @@ document.addEventListener("DOMContentLoaded", function () {
     billingButtons.forEach((button) => {
       button.addEventListener("click", () => {
         billingButtons.forEach((btn) => btn.classList.remove("active"));
-
         button.classList.add("active");
         updatePrices(button.dataset.billing);
       });
@@ -417,7 +416,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =========================
      Screenshots Column Cards
   ========================= */
-  
+
   // ─── Card data ───────────────────────────────────────────
   // Replace `emoji` + `bg` with a real image src in production.
   const cards = [
@@ -523,6 +522,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const doubled = [...colCards, ...colCards];
     col.innerHTML = doubled.map(buildCard).join("");
 
-    container.appendChild(col);
+    container?.appendChild(col);
   });
 });

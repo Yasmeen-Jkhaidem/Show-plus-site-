@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" class="home-page">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,67 +21,153 @@
 
   <body class="ltr">
     <main class="main-home">
-      <div class="background-overlay"></div>
+      <!-- ── Full-width background (orbs + geometry) — on <main> ── -->
+      <div class="background-overlay">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+
+      <div class="geo-lines" aria-hidden="true">
+        <svg
+          viewBox="0 0 1440 900"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#A32829" stop-opacity="0" />
+              <stop offset="50%" stop-color="#A32829" stop-opacity="0.4" />
+              <stop offset="100%" stop-color="#A32829" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#d4a853" stop-opacity="0" />
+              <stop offset="50%" stop-color="#d4a853" stop-opacity="0.2" />
+              <stop offset="100%" stop-color="#d4a853" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <line
+            x1="0"
+            y1="200"
+            x2="1440"
+            y2="200"
+            stroke="url(#lg1)"
+            stroke-width="1"
+          />
+          <line
+            x1="0"
+            y1="700"
+            x2="1440"
+            y2="700"
+            stroke="url(#lg1)"
+            stroke-width="0.5"
+          />
+          <line
+            x1="720"
+            y1="0"
+            x2="720"
+            y2="900"
+            stroke="url(#lg2)"
+            stroke-width="1"
+          />
+          <line
+            x1="800"
+            y1="0"
+            x2="1440"
+            y2="600"
+            stroke="rgba(163,40,41,0.1)"
+            stroke-width="1"
+          />
+          <path
+            d="M 0 0 L 120 0 L 120 3 L 3 3 L 3 120 L 0 120 Z"
+            fill="rgba(163,40,41,0.4)"
+          />
+          <path
+            d="M 1440 900 L 1320 900 L 1320 897 L 1437 897 L 1437 780 L 1440 780 Z"
+            fill="rgba(163,40,41,0.4)"
+          />
+          <rect
+            x="710"
+            y="448"
+            width="20"
+            height="20"
+            transform="rotate(45 720 458)"
+            fill="none"
+            stroke="rgba(212,168,83,0.3)"
+            stroke-width="1"
+          />
+          <rect
+            x="715"
+            y="453"
+            width="10"
+            height="10"
+            transform="rotate(45 720 458)"
+            fill="rgba(212,168,83,0.15)"
+          />
+        </svg>
+      </div>
+
+      <!-- ════════════════════════════
+       .container  — boxed layout
+  ════════════════════════════ -->
       <div class="container">
+        <!-- NAV -->
         <nav>
-          <a href="/">
-            <img src="./assets/images/logo-black.svg" alt="Show Plus Logo" />
+          <a href="/index-en.html" class="nav-logo">
+            <img src="./assets/images/logo-white.svg" alt="Show+ Logo" />
           </a>
 
-          <!-- Mobile Menu Button -->
           <button class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
           </button>
 
-          <!-- Menu Wrapper -->
           <div class="nav-menu" id="navMenu">
-            <a href="/">
-              <img src="./assets/images/logo-black.svg" alt="Show Plus Logo" />
+            <a href="/index-en.html" class="nav-logo">
+              <img src="./assets/images/logo-white.svg" alt="Show+ Logo" />
             </a>
             <ul>
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="./pages/how-it-works-en.html">How It Works</a></li>
+              <li class="active"><a href="/index-en.html">Home</a></li>
+              <li><a href="./pages/how-it-works-en.html">How it works?</a></li>
               <li><a href="./pages/pricing-en.html">Pricing</a></li>
               <li>
                 <a href="./index.html"
                   >العربية
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
+                    width="20"
+                    height="20"
                     viewBox="0 0 256 256"
                   >
                     <path
                       fill="currentColor"
                       d="M128 26a102 102 0 1 0 102 102A102.12 102.12 0 0 0 128 26m81.57 64h-40.38a132.6 132.6 0 0 0-25.73-50.67A90.29 90.29 0 0 1 209.57 90m8.43 38a89.7 89.7 0 0 1-3.83 26h-42.36a155.4 155.4 0 0 0 0-52h42.36a89.7 89.7 0 0 1 3.83 26m-90 87.83a110 110 0 0 1-15.19-19.45A124.2 124.2 0 0 1 99.35 166h57.3a124.2 124.2 0 0 1-13.46 30.38A110 110 0 0 1 128 215.83M96.45 154a139.2 139.2 0 0 1 0-52h63.1a139.2 139.2 0 0 1 0 52ZM38 128a89.7 89.7 0 0 1 3.83-26h42.36a155.4 155.4 0 0 0 0 52H41.83A89.7 89.7 0 0 1 38 128m90-87.83a110 110 0 0 1 15.19 19.45A124.2 124.2 0 0 1 156.65 90h-57.3a124.2 124.2 0 0 1 13.46-30.38A110 110 0 0 1 128 40.17m-15.46-.84A132.6 132.6 0 0 0 86.81 90H46.43a90.29 90.29 0 0 1 66.11-50.67M46.43 166h40.38a132.6 132.6 0 0 0 25.73 50.67A90.29 90.29 0 0 1 46.43 166m97 50.67A132.6 132.6 0 0 0 169.19 166h40.38a90.29 90.29 0 0 1-66.11 50.67Z"
-                    /></svg
-                ></a>
+                    />
+                  </svg>
+                </a>
               </li>
-              <!-- <li><a href="#">Features</a></li>
-              <li><a href="#">Integrations</a></li>
-              <li><a href="#">Success Stories</a></li>
-              <li><a href="#">Partnerships</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Contact Us</a></li> -->
             </ul>
-
-            <button id="login-cta" class="secondary-btn">Sign In</button>
+            <button id="login-cta" class="secondary-btn">Log in</button>
           </div>
         </nav>
 
         <div class="overlay" id="overlay"></div>
 
+        <!-- HERO CONTENT -->
         <div class="hero-content">
+          <!-- LEFT: text -->
           <div class="hero-text">
             <div class="heading-column">
+              <!-- live badge -->
+              <div class="live-badge">
+                <div class="live-dot"></div>
+                <span class="live-badge-text">Live for everyone</span>
+              </div>
+
               <div class="heading-container">
                 <h1>
-                  Turn Your Live Stream Into
+                  Turn your live stream into<br />
                   <span class="highlighter"
-                    >Real
+                    >real sales
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="180"
@@ -94,25 +180,27 @@
                         stroke="#FF4244"
                         stroke-width="2"
                         stroke-linecap="round"
-                      /></svg
-                  ></span>
-                  Sales
+                      />
+                    </svg>
+                  </span>
                 </h1>
               </div>
+
               <p>
-                Launch interactive live streams directly in your store and let
+                Launch an interactive live stream inside your store and let
                 customers buy while watching without leaving the broadcast.
               </p>
             </div>
+
             <div class="hero-column">
               <div class="hero-actions">
-                <a href="#"
-                  ><button type="button" class="primary-btn">
-                    Start Your Free Trial Now
-                  </button></a
-                >
-                <a href="#"
-                  ><button type="button" class="secondary-btn">
+                <a href="#">
+                  <button type="button" class="primary-btn">
+                    Start your free trial now
+                  </button>
+                </a>
+                <a href="#">
+                  <button type="button" class="secondary-btn">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -121,14 +209,15 @@
                       fill="none"
                     >
                       <path
-                        d="M21.69 10.8928L8.18252 2.63064C7.98327 2.50842 7.75499 2.44164 7.52128 2.43719C7.28757 2.43274 7.05691 2.49078 6.85315 2.60533C6.65047 2.71663 6.48163 2.88062 6.36446 3.07996C6.2473 3.27931 6.18616 3.5066 6.18752 3.73783V20.2622C6.18616 20.4934 6.2473 20.7207 6.36446 20.9201C6.48163 21.1194 6.65047 21.2834 6.85315 21.3947C7.05691 21.5092 7.28757 21.5673 7.52128 21.5628C7.75499 21.5584 7.98327 21.4916 8.18252 21.3694L21.69 13.1072C21.8802 12.9916 22.0373 12.8291 22.1464 12.6352C22.2555 12.4412 22.3128 12.2225 22.3128 12C22.3128 11.7775 22.2555 11.5588 22.1464 11.3649C22.0373 11.1709 21.8802 11.0084 21.69 10.8928ZM21.1031 12.1472L7.59377 20.4094C7.56461 20.4269 7.53123 20.4362 7.49721 20.4362C7.46319 20.4362 7.42981 20.4269 7.40065 20.4094C7.37239 20.3956 7.3486 20.3741 7.33201 20.3474C7.31543 20.3207 7.30672 20.2899 7.3069 20.2585V3.73783C7.30672 3.70639 7.31543 3.67555 7.33201 3.64884C7.3486 3.62214 7.37239 3.60066 7.40065 3.58689C7.43098 3.56998 7.46531 3.56156 7.50002 3.56251C7.5333 3.5637 7.56566 3.57374 7.59377 3.59158L21.1031 11.8528C21.1288 11.8679 21.1501 11.8894 21.1649 11.9152C21.1797 11.941 21.1875 11.9703 21.1875 12C21.1875 12.0298 21.1797 12.059 21.1649 12.0848C21.1501 12.1106 21.1288 12.1322 21.1031 12.1472Z"
-                        fill="#A32829"
+                        d="M21.69 10.8928L8.18252 2.63064C7.98327 2.50842 7.75499 2.44164 7.52128 2.43719C7.28757 2.43274 7.05691 2.49078 6.85315 2.60533C6.65047 2.71663 6.48163 2.88062 6.36446 3.07996C6.2473 3.27931 6.18616 3.5066 6.18752 3.73783V20.2622C6.18616 20.4934 6.2473 20.7207 6.36446 20.9201C6.48163 21.1194 6.65047 21.2834 6.85315 21.3947C7.05691 21.5092 7.28757 21.5673 7.52128 21.5628C7.75499 21.5584 7.98327 21.4916 8.18252 21.3694L21.69 13.1072C21.8802 12.9916 22.0373 12.8291 22.1464 12.6352C22.2555 12.4412 22.3128 12.2225 22.3128 12C22.3128 11.7775 22.2555 11.5588 22.1464 11.3649C22.0373 11.1709 21.8802 11.0084 21.69 10.8928Z"
+                        fill="rgba(255,255,255,0.7)"
                       />
                     </svg>
-                    Request a Demo
-                  </button></a
-                >
+                    Request a demo
+                  </button>
+                </a>
               </div>
+
               <div class="features-trigger">
                 <div class="trigger">
                   <svg
@@ -140,10 +229,10 @@
                   >
                     <path
                       d="M21.3975 7.14751L9.39751 19.1475C9.29204 19.2528 9.14907 19.312 9.00001 19.312C8.85094 19.312 8.70798 19.2528 8.60251 19.1475L3.35251 13.8975C3.25315 13.7909 3.19905 13.6498 3.20163 13.5041C3.2042 13.3584 3.26323 13.2194 3.36629 13.1163C3.46935 13.0132 3.60839 12.9542 3.75411 12.9516C3.89984 12.9491 4.04088 13.0031 4.14751 13.1025L9.00001 17.9541L20.6025 6.35251C20.7091 6.25315 20.8502 6.19905 20.9959 6.20163C21.1416 6.2042 21.2807 6.26323 21.3837 6.36629C21.4868 6.46935 21.5458 6.60839 21.5484 6.75412C21.551 6.89984 21.4969 7.04088 21.3975 7.14751Z"
-                      fill="#1E7A35"
+                      fill="#FF4244"
                     />
                   </svg>
-                  Trusted by +500 Merchants
+                  Trusted by 500+ merchants
                 </div>
 
                 <div class="trigger">
@@ -156,10 +245,10 @@
                   >
                     <path
                       d="M21.3975 7.14751L9.39751 19.1475C9.29204 19.2528 9.14907 19.312 9.00001 19.312C8.85094 19.312 8.70798 19.2528 8.60251 19.1475L3.35251 13.8975C3.25315 13.7909 3.19905 13.6498 3.20163 13.5041C3.2042 13.3584 3.26323 13.2194 3.36629 13.1163C3.46935 13.0132 3.60839 12.9542 3.75411 12.9516C3.89984 12.9491 4.04088 13.0031 4.14751 13.1025L9.00001 17.9541L20.6025 6.35251C20.7091 6.25315 20.8502 6.19905 20.9959 6.20163C21.1416 6.2042 21.2807 6.26323 21.3837 6.36629C21.4868 6.46935 21.5458 6.60839 21.5484 6.75412C21.551 6.89984 21.4969 7.04088 21.3975 7.14751Z"
-                      fill="#1E7A35"
+                      fill="#FF4244"
                     />
                   </svg>
-                  Integrates with Your Store
+                  Integrates with your store
                 </div>
 
                 <div class="trigger">
@@ -172,28 +261,250 @@
                   >
                     <path
                       d="M21.3975 7.14751L9.39751 19.1475C9.29204 19.2528 9.14907 19.312 9.00001 19.312C8.85094 19.312 8.70798 19.2528 8.60251 19.1475L3.35251 13.8975C3.25315 13.7909 3.19905 13.6498 3.20163 13.5041C3.2042 13.3584 3.26323 13.2194 3.36629 13.1163C3.46935 13.0132 3.60839 12.9542 3.75411 12.9516C3.89984 12.9491 4.04088 13.0031 4.14751 13.1025L9.00001 17.9541L20.6025 6.35251C20.7091 6.25315 20.8502 6.19905 20.9959 6.20163C21.1416 6.2042 21.2807 6.26323 21.3837 6.36629C21.4868 6.46935 21.5458 6.60839 21.5484 6.75412C21.551 6.89984 21.4969 7.04088 21.3975 7.14751Z"
-                      fill="#1E7A35"
+                      fill="#FF4244"
                     />
                   </svg>
-                  Start in Minutes
+                  Start in minutes
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- RIGHT: phone visual -->
           <div class="hero-image-container">
-            <img src="./assets/images/hero-image.png" alt="Hero Image" />
+            <div class="phone-scene">
+              <!-- floating card: sales -->
+              <div class="float-card float-card-sales">
+                <div class="fc-label">Sales Today</div>
+                <div class="fc-value">
+                  🔥 3,241 <span class="fc-accent">SAR</span>
+                </div>
+                <div class="fc-trend">↑ 32% higher than yesterday</div>
+              </div>
 
-            <video autoplay muted loop playsinline id="video-1">
-              <source src="./assets/videos/ad-1.mp4" type="video/mp4" />
-            </video>
+              <!-- floating card: stock -->
+              <div class="float-card float-card-stock">
+                <div class="fc-label">Stock Remaining</div>
+                <div class="fc-progress-bar">
+                  <div class="fc-progress-fill"></div>
+                </div>
+                <div class="fc-pct">68% sold</div>
+              </div>
 
-            <video autoplay muted loop playsinline id="video-2">
-              <source src="./assets/videos/ad-2.mp4" type="video/mp4" />
-            </video>
+              <!-- floating card: orders -->
+              <div class="float-card float-card-orders">
+                <div class="fc-label">Added to cart</div>
+                <div class="fc-value">
+                  🛒 +123 <span class="fc-accent">orders</span>
+                </div>
+                <div class="fc-trend">Last 5 minutes</div>
+              </div>
+
+              <!-- phone frame -->
+              <div class="phone-frame">
+                <div class="phone-top-bar">
+                  <div class="phone-live-tag">
+                    <div class="phone-live-dot"></div>
+                    Live
+                  </div>
+                  <div class="phone-views">👁 12.4k</div>
+                  <div class="phone-timer" id="phone-timer">02:47</div>
+                </div>
+
+                <div class="phone-product-area">
+                  <div class="phone-product-inner">
+                    <div class="product-silhouette">
+                      <svg
+                        viewBox="0 0 140 140"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <defs>
+                          <radialGradient id="prodGlow" cx="50%" cy="50%">
+                            <stop
+                              offset="0%"
+                              stop-color="#A32829"
+                              stop-opacity="0.5"
+                            />
+                            <stop
+                              offset="100%"
+                              stop-color="#A32829"
+                              stop-opacity="0"
+                            />
+                          </radialGradient>
+                          <linearGradient
+                            id="bagGrad"
+                            x1="0"
+                            y1="0"
+                            x2="1"
+                            y2="1"
+                          >
+                            <stop offset="0%" stop-color="#c73334" />
+                            <stop offset="100%" stop-color="#7a1b1c" />
+                          </linearGradient>
+                        </defs>
+                        <ellipse
+                          cx="70"
+                          cy="110"
+                          rx="50"
+                          ry="14"
+                          fill="url(#prodGlow)"
+                          opacity="0.6"
+                        />
+                        <path
+                          d="M 38 55 Q 35 45 48 40 L 92 40 Q 105 45 102 55 L 110 105 Q 112 118 100 118 L 40 118 Q 28 118 30 105 Z"
+                          fill="url(#bagGrad)"
+                          opacity="0.95"
+                        />
+                        <path
+                          d="M 54 40 Q 54 22 70 22 Q 86 22 86 40"
+                          fill="none"
+                          stroke="#c73334"
+                          stroke-width="5"
+                          stroke-linecap="round"
+                        />
+                        <path
+                          d="M 42 62 Q 50 56 62 58 L 60 80 Q 45 76 40 70 Z"
+                          fill="rgba(255,255,255,0.1)"
+                        />
+                        <rect
+                          x="62"
+                          y="78"
+                          width="16"
+                          height="14"
+                          rx="3"
+                          fill="rgba(212,168,83,0.6)"
+                        />
+                        <rect
+                          x="66"
+                          y="74"
+                          width="8"
+                          height="8"
+                          rx="4"
+                          fill="none"
+                          stroke="rgba(212,168,83,0.7)"
+                          stroke-width="2"
+                        />
+                        <g fill="#d4a853" opacity="0.8">
+                          <circle cx="22" cy="42" r="2">
+                            <animate
+                              attributeName="opacity"
+                              values="0;1;0"
+                              dur="2s"
+                              repeatCount="indefinite"
+                              begin="0s"
+                            />
+                          </circle>
+                          <circle cx="118" cy="70" r="1.5">
+                            <animate
+                              attributeName="opacity"
+                              values="0;1;0"
+                              dur="2.5s"
+                              repeatCount="indefinite"
+                              begin="0.7s"
+                            />
+                          </circle>
+                          <circle cx="28" cy="90" r="1.5">
+                            <animate
+                              attributeName="opacity"
+                              values="0;1;0"
+                              dur="1.8s"
+                              repeatCount="indefinite"
+                              begin="1.2s"
+                            />
+                          </circle>
+                          <circle cx="115" cy="35" r="2">
+                            <animate
+                              attributeName="opacity"
+                              values="0;1;0"
+                              dur="2.2s"
+                              repeatCount="indefinite"
+                              begin="0.4s"
+                            />
+                          </circle>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div class="phone-product-card">
+                    <div class="phone-product-name">
+                      Luxury Handbag — Collection 2025
+                    </div>
+                    <div class="phone-product-pricing">
+                      <span class="phone-price-now">SAR 499</span>
+                      <span class="phone-price-old">SAR 799</span>
+                      <span class="phone-discount-tag">38% off</span>
+                    </div>
+                    <button class="phone-buy-btn">🛒 Buy Now</button>
+                  </div>
+                </div>
+
+                <div class="phone-comments" id="phone-comments">
+                  <div class="comment-item">
+                    <svg class="comment-avatar" viewBox="0 0 20 20">
+                      <circle cx="10" cy="10" r="10" fill="#A32829" />
+                      <text
+                        x="10"
+                        y="14"
+                        text-anchor="middle"
+                        font-size="10"
+                        fill="white"
+                      >
+                        س
+                      </text>
+                    </svg>
+                    <span
+                      ><span class="comment-name">Sara</span>: The color is
+                      gorgeous 😍</span
+                    >
+                  </div>
+                  <div class="comment-item">
+                    <svg class="comment-avatar" viewBox="0 0 20 20">
+                      <circle cx="10" cy="10" r="10" fill="#7a1b1c" />
+                      <text
+                        x="10"
+                        y="14"
+                        text-anchor="middle"
+                        font-size="10"
+                        fill="white"
+                      >
+                        ن
+                      </text>
+                    </svg>
+                    <span
+                      ><span class="comment-name">Noura</span>: Ordered it
+                      ✅</span
+                    >
+                  </div>
+                  <div class="comment-item">
+                    <svg class="comment-avatar" viewBox="0 0 20 20">
+                      <circle cx="10" cy="10" r="10" fill="#d4a853" />
+                      <text
+                        x="10"
+                        y="14"
+                        text-anchor="middle"
+                        font-size="10"
+                        fill="white"
+                      >
+                        م
+                      </text>
+                    </svg>
+                    <span
+                      ><span class="comment-name">Manal</span>: Is it available
+                      in black?</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- /phone-frame -->
+            </div>
+            <!-- /phone-scene -->
           </div>
+          <!-- /hero-image-container -->
         </div>
+        <!-- /hero-content -->
       </div>
+      <!-- /.container -->
     </main>
 
     <div class="triggers-container">
@@ -1054,9 +1365,7 @@
             Start your first live stream in minutes — give your customers what
             they want, the way they want it.
           </p>
-          <button class="primary-btn">
-            Start Streaming Now
-          </button>
+          <button class="primary-btn">Start Streaming Now</button>
         </div>
 
         <div class="screenshots-column" id="screenshots-column">
@@ -1071,7 +1380,7 @@
     </section>
 
     <footer class="site-footer">
-      <div class="trigger-section primary-section">
+      <div id="trigger-section" class="trigger-section primary-section">
         <div class="container">
           <div class="content-column">
             <h2 class="section-heading">Ready to Double Your Sales?</h2>

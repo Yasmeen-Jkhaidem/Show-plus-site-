@@ -7,7 +7,7 @@
   flex-direction: row;
   gap: 96px;
   margin-top: 96px;
-  text-align: right;
+  text-align: start;
 }
 
 .main-home.how-it-works .hero-text {
@@ -48,7 +48,7 @@
 
 .data-report .data-text h2,
 .data-report .data-text p {
-  text-align: right;
+  text-align: start;
 }
 
 .data-report .container .data-text {
@@ -156,6 +156,11 @@
     padding-left: 12px;
     font-size: 16px;
   }
+}
+
+.ltr .main-home .image-container::before {
+  right: unset;
+  left: -24px;
 }
 
 @media (max-width: 768px) {

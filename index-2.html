@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Show Plus – بث مباشر</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary-color:  #A32829;
+      --primary-dark:   #A32829;
+      --button-active:  #A32829;
+      --white-color:    #ffffff;
+      --text-primary:   #0f0f0e;
+      --red-glow:       #c73334;
+      --red-deep:       #7a1b1c;
+      --gold:           #d4a853;
+      --gold-light:     #f0cc80;
+      --dark:           #0d0608;
+      --dark2:          #160b0c;
+      --grey:           #9a8a8b;
+      --subtitle1-font-family: 'IBM Plex Sans Arabic';
+      --subtitle1-size: 16px;
+      --subtitle1-font-weight: 600;
+      --subtitle1-line-height: 24px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--dark);
+      color: var(--white-color);
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay on body */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── .container = your boxed wrapper ─── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ─── <main> = full-width background canvas ─── */
+    .main-home {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(160deg, var(--dark) 0%, var(--dark2) 50%, #1a0607 100%);
+    }
+
+    /* Animated orbs — on main, full-width */
+    .background-overlay {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .background-overlay .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: orbDrift 8s ease-in-out infinite;
+    }
+    .background-overlay .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(163,40,41,0.35) 0%, transparent 70%);
+      top: -120px; left: -80px;
+      animation-delay: 0s;
+    }
+    .background-overlay .orb-2 {
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, rgba(212,168,83,0.15) 0%, transparent 70%);
+      bottom: 60px; right: 120px;
+      animation-delay: -3s;
+    }
+    .background-overlay .orb-3 {
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(163,40,41,0.2) 0%, transparent 70%);
+      top: 50%; right: 38%;
+      animation-delay: -5s;
+    }
+    @keyframes orbDrift {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      33%  { transform: translate(-28px,20px) scale(1.05); }
+      66%  { transform: translate(20px,-28px) scale(0.95); }
+    }
+
+    /* SVG geometric lines — on main */
+    .geo-lines {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .geo-lines svg { width: 100%; height: 100%; }
+
+    /* ─── NAV ─── */
+    main nav {
+      display: flex;
+      width: 100%;
+      padding: 32px 0;
+      align-items: center;
+      gap: 48px;
+    }
+    #login-cta { padding: 12px 24px; }
+
+    main nav #navMenu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 48px;
+    }
+    main nav ul {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 24px;
+      list-style-type: none;
+      padding: 0; margin: 0;
+    }
+    main nav li { position: relative; }
+    main nav li a { display: flex; align-items: center; gap: 4px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    main nav li a:hover { color: white; }
+    main nav li.active a { font-weight: 600; color: var(--white-color); }
+    main nav li.active::before {
+      content: '';
+      position: absolute;
+      width: 4px; height: 4px;
+      background: var(--red-glow);
+      bottom: -14px; left: 50%;
+      border-radius: 50%;
+      filter: drop-shadow(0 0 8px #ff4244);
+    }
+    .menu-toggle { display: none; background: none; border: none; cursor: pointer; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; }
+
+    /* ─── BUTTONS ─── */
+    .primary-btn, .secondary-btn {
+      display: flex;
+      padding: 16px 32px;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border-radius: 16px;
+      font-family: var(--subtitle1-font-family);
+      font-size: var(--subtitle1-size);
+      font-weight: var(--subtitle1-font-weight);
+      line-height: var(--subtitle1-line-height);
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.25s;
+    }
+    .primary-btn {
+      background: var(--button-active);
+      color: var(--white-color);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(163,40,41,0.5);
+    }
+    .primary-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(163,40,41,0.65); }
+    .secondary-btn {
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: var(--white-color);
+      backdrop-filter: blur(10px);
+    }
+    .secondary-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.38); transform: translateY(-2px); }
+
+    /* ─── HERO LAYOUT ─── */
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      padding: 48px 0 80px;
+    }
+
+    /* LEFT: text side */
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      row-gap: 28px;
+    }
+
+    .heading-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Live badge */
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(163,40,41,0.15);
+      border: 1px solid rgba(163,40,41,0.5);
+      border-radius: 999px;
+      padding: 0.45rem 1.1rem;
+      backdrop-filter: blur(10px);
+      animation: fadeSlideIn 0.7s ease both;
+    }
+    .live-dot {
+      width: 10px; height: 10px;
+      background: var(--red-glow);
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulseDot 1.6s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%   { box-shadow: 0 0 0 0 rgba(163,40,41,0.8); }
+      70%  { box-shadow: 0 0 0 10px rgba(163,40,41,0); }
+      100% { box-shadow: 0 0 0 0 rgba(163,40,41,0); }
+    }
+    .live-badge-text {
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.1em; color: var(--red-glow);
+    }
+    .live-badge-viewers {
+      font-size: 0.78rem; color: var(--grey);
+      border-right: 1px solid rgba(255,255,255,0.15);
+      padding-right: 0.6rem;
+    }
+
+    .heading-container { position: relative; }
+    .heading-container h1 {
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--white-color);
+    }
+    .heading-container .highlighter {
+      position: relative;
+      background: linear-gradient(135deg, var(--red-glow) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    /* your original underline SVG stays inside .highlighter */
+    .heading-container .highlighter svg {
+      position: absolute;
+      bottom: -16px; left: -8px;
+    }
+
+    .heading-column p {
+      font-size: 1.05rem; font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.9; max-width: 480px;
+    }
+
+    .hero-column {
+      display: flex;
+      flex-direction: column;
+      row-gap: 16px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .hero-actions a { display: flex; }
+
+    /* stats row */
+    .features-trigger {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .trigger {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .trigger-num {
+      font-size: 1.7rem; font-weight: 700; color: var(--white-color); line-height: 1;
+    }
+    .trigger-num span { color: var(--gold); }
+    .trigger-label { font-size: 0.78rem; color: var(--grey); font-weight: 300; }
+    .trigger-divider {
+      width: 1px;
+      background: rgba(255,255,255,0.1);
+      align-self: stretch;
+    }
+
+    /* RIGHT: visual/phone side */
+    .hero-image-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* phone scene */
+    .phone-scene {
+      position: relative;
+      width: 280px;
+      animation: fadeSlideIn 0.9s ease 0.2s both, phoneFloat 5s ease-in-out infinite 1.5s;
+    }
+    @keyframes phoneFloat {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50%       { transform: translateY(-16px) rotate(-2deg); }
+    }
+
+    .phone-frame {
+      width: 100%;
+      background: #1a0d0e;
+      border-radius: 38px;
+      border: 2px solid rgba(163,40,41,0.5);
+      box-shadow:
+        0 0 0 6px rgba(163,40,41,0.08),
+        0 0 60px rgba(163,40,41,0.35),
+        0 40px 80px rgba(0,0,0,0.8),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      overflow: hidden;
+      aspect-ratio: 9/19;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* phone top bar */
+    .phone-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 1rem 0.4rem;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      position: relative; z-index: 2;
+    }
+    .phone-live-tag {
+      display: flex; align-items: center; gap: 0.3rem;
+      background: var(--primary-dark);
+      border-radius: 6px; padding: 0.15rem 0.5rem;
+      font-size: 0.6rem; font-weight: 700; color: white;
+    }
+    .phone-live-dot {
+      width: 5px; height: 5px;
+      background: white; border-radius: 50%;
+      animation: pulseDot 1.4s ease-in-out infinite;
+    }
+    .phone-views { font-size: 0.6rem; color: rgba(255,255,255,0.7); }
+    .phone-timer { font-size: 0.6rem; color: var(--gold); font-weight: 600; }
+
+    /* phone product area */
+    .phone-product-area {
+      flex: 1;
+      position: relative;
+      background: linear-gradient(160deg, #2a0f10 0%, #1a0808 100%);
+      overflow: hidden;
+    }
+    .phone-product-inner {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .product-silhouette { width: 130px; height: 130px; }
+    .product-silhouette svg { width: 100%; height: 100%; }
+
+    /* product card overlay */
+    .phone-product-card {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(0deg, rgba(13,6,8,0.98) 0%, rgba(13,6,8,0.7) 80%, transparent 100%);
+      padding: 0.8rem 0.9rem;
+    }
+    .phone-product-name { font-size: 0.72rem; font-weight: 600; color: white; margin-bottom: 0.2rem; }
+    .phone-product-pricing { display: flex; align-items: center; gap: 0.5rem; }
+    .phone-price-now { font-size: 0.9rem; font-weight: 700; color: var(--gold); }
+    .phone-price-old { font-size: 0.6rem; color: var(--grey); text-decoration: line-through; }
+    .phone-discount-tag { background: var(--primary-dark); color: white; font-size: 0.52rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 4px; }
+    .phone-buy-btn {
+      width: 100%;
+      background: var(--primary-dark);
+      color: white; border: none; border-radius: 8px;
+      padding: 0.4rem; font-family: inherit; font-size: 0.65rem; font-weight: 700;
+      margin-top: 0.5rem; cursor: pointer; position: relative; overflow: hidden;
+    }
+    .phone-buy-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: translateX(-100%);
+      animation: shimmer 2.5s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%       { transform: translateX(-100%); }
+      50%, 100%{ transform: translateX(100%); }
+    }
+
+    /* comments strip */
+    .phone-comments {
+      padding: 0.4rem 0.7rem;
+      display: flex; flex-direction: column; gap: 0.3rem;
+      max-height: 65px; overflow: hidden;
+    }
+    .comment-item {
+      display: flex; align-items: center; gap: 0.35rem;
+      font-size: 0.55rem; color: rgba(255,255,255,0.7);
+    }
+    .comment-avatar { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+    .comment-name { color: var(--gold-light); font-weight: 600; }
+
+    /* ── Floating cards (positioned on .hero-image-container) ── */
+    .float-card {
+      position: absolute;
+      background: rgba(22,10,11,0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(163,40,41,0.3);
+      border-radius: 14px;
+      padding: 0.8rem 1rem;
+      z-index: 20;
+    }
+    .float-card-sales {
+      left: -20px; bottom: 24%;
+      animation: fadeSlideIn 0.8s ease 1s both, floatCard1 6s ease-in-out infinite 2s;
+    }
+    .float-card-orders {
+      right: -20px; bottom: 14%;
+      animation: fadeSlideIn 0.8s ease 1.2s both, floatCard2 7s ease-in-out infinite 2.5s;
+    }
+    .float-card-stock {
+      left: -20px; top: 18%;
+      animation: fadeSlideIn 0.8s ease 1.4s both, floatCard2 5.5s ease-in-out infinite 3s;
+      width: 140px;
+    }
+    @keyframes floatCard1 {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    @keyframes floatCard2 {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(8px); }
+    }
+    .fc-label { font-size: 0.62rem; color: var(--grey); margin-bottom: 0.25rem; }
+    .fc-value { font-size: 1rem; font-weight: 700; color: var(--white-color); display: flex; align-items: center; gap: 0.3rem; }
+    .fc-value .fc-accent { color: var(--gold); }
+    .fc-trend { font-size: 0.6rem; color: #4ecb71; font-weight: 600; margin-top: 0.15rem; }
+    .fc-progress-bar { height: 5px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; margin-top: 0.4rem; }
+    .fc-progress-fill {
+      height: 100%; width: 68%;
+      background: linear-gradient(90deg, var(--primary-dark), var(--gold));
+      border-radius: 99px;
+      animation: fillProgress 2.5s ease 2s both;
+    }
+    @keyframes fillProgress { from { width: 0%; } to { width: 68%; } }
+    .fc-pct { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-top: 0.25rem; }
+
+    /* ── Ticker — on <main>, full width ── */
+    .live-ticker {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 20;
+      background: var(--primary-dark);
+      padding: 0.55rem 0;
+      overflow: hidden;
+    }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.78rem; font-weight: 500;
+      color: rgba(255,255,255,0.92);
+      padding: 0 2.5rem;
+      border-right: 1px solid rgba(255,255,255,0.25);
+    }
+    .ticker-item:last-child { border-right: none; }
+    .ticker-star { color: var(--gold-light); font-size: 1rem; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── Entrance animation ── */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-text        { animation: fadeSlideIn 0.7s ease 0.1s both; }
+    .live-badge       { animation: fadeSlideIn 0.7s ease 0s both; }
+    .heading-column   { animation: fadeSlideIn 0.7s ease 0.15s both; }
+    .hero-column      { animation: fadeSlideIn 0.7s ease 0.3s both; }
+    .hero-image-container { animation: fadeSlideIn 0.8s ease 0.25s both; }
+
+    /* ── Nav logo text ── */
+    .nav-logo-text { font-size: 1.25rem; font-weight: 700; color: white; }
+    .nav-logo-text span { color: var(--gold); }
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: var(--primary-dark);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 4px 16px rgba(163,40,41,0.5);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) {
+      .hero-content { grid-template-columns: 1fr; padding-bottom: 120px; }
+      .hero-text { align-items: center; text-align: center; }
+      .heading-column p { text-align: center; }
+      .hero-image-container { min-height: 480px; }
+      .float-card-sales { left: 0; }
+      .float-card-orders { right: 0; }
+      .float-card-stock { display: none; }
+      main nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<main class="main-home">
+
+  <!-- ── Full-width background (orbs + geometry) — on <main> ── -->
+  <div class="background-overlay">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="geo-lines" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stop-color="#A32829" stop-opacity="0"/>
+          <stop offset="50%"  stop-color="#A32829" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#A32829" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#d4a853" stop-opacity="0"/>
+          <stop offset="50%"  stop-color="#d4a853" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#d4a853" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <line x1="0" y1="200" x2="1440" y2="200" stroke="url(#lg1)" stroke-width="1"/>
+      <line x1="0" y1="700" x2="1440" y2="700" stroke="url(#lg1)" stroke-width="0.5"/>
+      <line x1="720" y1="0" x2="720" y2="900" stroke="url(#lg2)" stroke-width="1"/>
+      <line x1="800" y1="0" x2="1440" y2="600" stroke="rgba(163,40,41,0.1)" stroke-width="1"/>
+      <path d="M 0 0 L 120 0 L 120 3 L 3 3 L 3 120 L 0 120 Z" fill="rgba(163,40,41,0.4)"/>
+      <path d="M 1440 900 L 1320 900 L 1320 897 L 1437 897 L 1437 780 L 1440 780 Z" fill="rgba(163,40,41,0.4)"/>
+      <rect x="710" y="448" width="20" height="20" transform="rotate(45 720 458)"
+            fill="none" stroke="rgba(212,168,83,0.3)" stroke-width="1"/>
+      <rect x="715" y="453" width="10" height="10" transform="rotate(45 720 458)"
+            fill="rgba(212,168,83,0.15)"/>
+    </svg>
+  </div>
+
+  <!-- ── Ticker — full width on <main> ── -->
+  <div class="live-ticker" aria-label="إشعارات مباشرة">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-star">★</span> عروض حصرية على الأحذية الرياضية — خصم حتى ٥٠٪</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> بث مباشر جديد كل ١٠ دقائق على مدار اليوم</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> شحن مجاني لجميع مناطق المملكة</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> عروض إلكترونيات حصرية — ابدأ الساعة ٨ مساءً</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> ماركات عالمية بأسعار لا تُصدَّق</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> عروض حصرية على الأحذية الرياضية — خصم حتى ٥٠٪</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> بث مباشر جديد كل ١٠ دقائق على مدار اليوم</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> شحن مجاني لجميع مناطق المملكة</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> عروض إلكترونيات حصرية — ابدأ الساعة ٨ مساءً</span>
+      <span class="ticker-item"><span class="ticker-star">★</span> ماركات عالمية بأسعار لا تُصدَّق</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       .container  — boxed layout
+  ════════════════════════════ -->
+  <div class="container">
+
+    <!-- NAV -->
+    <nav>
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-icon">🛍️</div>
+        <span class="nav-logo-text">بَثّ <span>شوب</span></span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-menu" id="navMenu">
+        <ul>
+          <li class="active"><a href="/">الرئيسة</a></li>
+          <li><a href="./pages/how-it-works.html">كيف تعمل المنصة؟</a></li>
+          <li><a href="./pages/pricing.html">الأسعار</a></li>
+          <li>
+            <a href="./index-en.html">English
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256">
+                <path fill="currentColor" d="M128 26a102 102 0 1 0 102 102A102.12 102.12 0 0 0 128 26m81.57 64h-40.38a132.6 132.6 0 0 0-25.73-50.67A90.29 90.29 0 0 1 209.57 90m8.43 38a89.7 89.7 0 0 1-3.83 26h-42.36a155.4 155.4 0 0 0 0-52h42.36a89.7 89.7 0 0 1 3.83 26m-90 87.83a110 110 0 0 1-15.19-19.45A124.2 124.2 0 0 1 99.35 166h57.3a124.2 124.2 0 0 1-13.46 30.38A110 110 0 0 1 128 215.83M96.45 154a139.2 139.2 0 0 1 0-52h63.1a139.2 139.2 0 0 1 0 52ZM38 128a89.7 89.7 0 0 1 3.83-26h42.36a155.4 155.4 0 0 0 0 52H41.83A89.7 89.7 0 0 1 38 128m90-87.83a110 110 0 0 1 15.19 19.45A124.2 124.2 0 0 1 156.65 90h-57.3a124.2 124.2 0 0 1 13.46-30.38A110 110 0 0 1 128 40.17m-15.46-.84A132.6 132.6 0 0 0 86.81 90H46.43a90.29 90.29 0 0 1 66.11-50.67M46.43 166h40.38a132.6 132.6 0 0 0 25.73 50.67A90.29 90.29 0 0 1 46.43 166m97 50.67A132.6 132.6 0 0 0 169.19 166h40.38a90.29 90.29 0 0 1-66.11 50.67Z"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+        <button id="login-cta" class="secondary-btn">تسجيل الدخول</button>
+      </div>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- HERO CONTENT -->
+    <div class="hero-content">
+
+      <!-- LEFT: text -->
+      <div class="hero-text">
+        <div class="heading-column">
+
+          <!-- live badge -->
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            <span class="live-badge-text">مباشر الآن</span>
+            <span class="live-badge-viewers">👁 ١٢٬٤٨٣ مشاهد</span>
+          </div>
+
+          <div class="heading-container">
+            <h1>
+              حوِّل بثك المباشر إلى<br>
+              <span class="highlighter">مبيعات حقيقية
+                <svg xmlns="http://www.w3.org/2000/svg" width="180" height="13" viewBox="0 0 180 13" fill="none">
+                  <path d="M1 1.51839C6.32527 1.51839 11.6506 1.51839 44.3485 1.30221C77.0465 1.08603 136.956 0.653661 163.159 1.51184C189.361 2.37002 180.042 4.53186 157.102 6.51026C134.162 8.48866 97.8837 10.2181 60.5059 12"
+                        stroke="#FF4244" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </h1>
+          </div>
+
+          <p>
+            أطلق بثًا مباشرًا تفاعليًا داخل متجرك، واسمح للعملاء بالشراء
+            أثناء المشاهدة بدون مغادرة البث.
+          </p>
+        </div>
+
+        <div class="hero-column">
+          <div class="hero-actions">
+            <a href="#">
+              <button type="button" class="primary-btn">ابدأ تجربتك المجانية الآن</button>
+            </a>
+            <a href="#">
+              <button type="button" class="secondary-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M21.69 10.8928L8.18252 2.63064C7.98327 2.50842 7.75499 2.44164 7.52128 2.43719C7.28757 2.43274 7.05691 2.49078 6.85315 2.60533C6.65047 2.71663 6.48163 2.88062 6.36446 3.07996C6.2473 3.27931 6.18616 3.5066 6.18752 3.73783V20.2622C6.18616 20.4934 6.2473 20.7207 6.36446 20.9201C6.48163 21.1194 6.65047 21.2834 6.85315 21.3947C7.05691 21.5092 7.28757 21.5673 7.52128 21.5628C7.75499 21.5584 7.98327 21.4916 8.18252 21.3694L21.69 13.1072C21.8802 12.9916 22.0373 12.8291 22.1464 12.6352C22.2555 12.4412 22.3128 12.2225 22.3128 12C22.3128 11.7775 22.2555 11.5588 22.1464 11.3649C22.0373 11.1709 21.8802 11.0084 21.69 10.8928Z" fill="rgba(255,255,255,0.7)"/>
+                </svg>
+                طلب عرض توضيحي
+              </button>
+            </a>
+          </div>
+
+          <!-- stats (replacing the checkmarks) -->
+          <div class="features-trigger">
+            <div class="trigger">
+              <div class="trigger-num">+٥٠٠</div>
+              <div class="trigger-label">تاجر يثق بنا</div>
+            </div>
+            <div class="trigger-divider"></div>
+            <div class="trigger">
+              <div class="trigger-num">٩٨<span>%</span></div>
+              <div class="trigger-label">نسبة الرضا</div>
+            </div>
+            <div class="trigger-divider"></div>
+            <div class="trigger">
+              <div class="trigger-num">+٥<span>ك</span></div>
+              <div class="trigger-label">بث يومي</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: phone visual -->
+      <div class="hero-image-container">
+        <div class="phone-scene">
+
+          <!-- floating card: sales -->
+          <div class="float-card float-card-sales">
+            <div class="fc-label">المبيعات اليوم</div>
+            <div class="fc-value">🔥 ٣٬٢٤١ <span class="fc-accent">ر.س</span></div>
+            <div class="fc-trend">↑ ٣٢٪ أعلى من الأمس</div>
+          </div>
+
+          <!-- floating card: stock -->
+          <div class="float-card float-card-stock">
+            <div class="fc-label">الكمية المتبقية</div>
+            <div class="fc-progress-bar"><div class="fc-progress-fill"></div></div>
+            <div class="fc-pct">٦٨٪ تم بيعها</div>
+          </div>
+
+          <!-- floating card: orders -->
+          <div class="float-card float-card-orders">
+            <div class="fc-label">أُضيف للسلة</div>
+            <div class="fc-value">🛒 +١٢٣ <span class="fc-accent">طلب</span></div>
+            <div class="fc-trend">آخر ٥ دقائق</div>
+          </div>
+
+          <!-- phone frame -->
+          <div class="phone-frame">
+
+            <div class="phone-top-bar">
+              <div class="phone-live-tag">
+                <div class="phone-live-dot"></div>
+                مباشر
+              </div>
+              <div class="phone-views">👁 ١٢.٤k</div>
+              <div class="phone-timer" id="phone-timer">٠٢:٤٧</div>
+            </div>
+
+            <div class="phone-product-area">
+              <div class="phone-product-inner">
+                <div class="product-silhouette">
+                  <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <radialGradient id="prodGlow" cx="50%" cy="50%">
+                        <stop offset="0%"   stop-color="#A32829" stop-opacity="0.5"/>
+                        <stop offset="100%" stop-color="#A32829" stop-opacity="0"/>
+                      </radialGradient>
+                      <linearGradient id="bagGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%"   stop-color="#c73334"/>
+                        <stop offset="100%" stop-color="#7a1b1c"/>
+                      </linearGradient>
+                    </defs>
+                    <ellipse cx="70" cy="110" rx="50" ry="14" fill="url(#prodGlow)" opacity="0.6"/>
+                    <path d="M 38 55 Q 35 45 48 40 L 92 40 Q 105 45 102 55 L 110 105 Q 112 118 100 118 L 40 118 Q 28 118 30 105 Z"
+                          fill="url(#bagGrad)" opacity="0.95"/>
+                    <path d="M 54 40 Q 54 22 70 22 Q 86 22 86 40"
+                          fill="none" stroke="#c73334" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M 42 62 Q 50 56 62 58 L 60 80 Q 45 76 40 70 Z" fill="rgba(255,255,255,0.1)"/>
+                    <rect x="62" y="78" width="16" height="14" rx="3" fill="rgba(212,168,83,0.6)"/>
+                    <rect x="66" y="74" width="8"  height="8"  rx="4" fill="none" stroke="rgba(212,168,83,0.7)" stroke-width="2"/>
+                    <g fill="#d4a853" opacity="0.8">
+                      <circle cx="22"  cy="42" r="2">  <animate attributeName="opacity" values="0;1;0" dur="2s"   repeatCount="indefinite" begin="0s"/></circle>
+                      <circle cx="118" cy="70" r="1.5"><animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="0.7s"/></circle>
+                      <circle cx="28"  cy="90" r="1.5"><animate attributeName="opacity" values="0;1;0" dur="1.8s" repeatCount="indefinite" begin="1.2s"/></circle>
+                      <circle cx="115" cy="35" r="2">  <animate attributeName="opacity" values="0;1;0" dur="2.2s" repeatCount="indefinite" begin="0.4s"/></circle>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="phone-product-card">
+                <div class="phone-product-name">حقيبة يد فاخرة — كوليكشن ٢٠٢٥</div>
+                <div class="phone-product-pricing">
+                  <span class="phone-price-now">٤٩٩ ر.س</span>
+                  <span class="phone-price-old">٧٩٩ ر.س</span>
+                  <span class="phone-discount-tag">خصم ٣٨٪</span>
+                </div>
+                <button class="phone-buy-btn">🛒 اشتري الآن</button>
+              </div>
+            </div>
+
+            <div class="phone-comments" id="phone-comments">
+              <div class="comment-item">
+                <svg class="comment-avatar" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#A32829"/><text x="10" y="14" text-anchor="middle" font-size="10" fill="white">س</text></svg>
+                <span><span class="comment-name">سارة</span>: اللون رائع 😍</span>
+              </div>
+              <div class="comment-item">
+                <svg class="comment-avatar" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#7a1b1c"/><text x="10" y="14" text-anchor="middle" font-size="10" fill="white">ن</text></svg>
+                <span><span class="comment-name">نورة</span>: طلبتها ✅</span>
+              </div>
+              <div class="comment-item">
+                <svg class="comment-avatar" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#d4a853"/><text x="10" y="14" text-anchor="middle" font-size="10" fill="white">م</text></svg>
+                <span><span class="comment-name">منال</span>: هل يوجد أسود؟</span>
+              </div>
+            </div>
+
+          </div><!-- /phone-frame -->
+        </div><!-- /phone-scene -->
+      </div><!-- /hero-image-container -->
+
+    </div><!-- /hero-content -->
+  </div><!-- /.container -->
+
+</main>
+
+<script>
+  /* countdown timer */
+  (function () {
+    let secs = 167;
+    const el = document.getElementById('phone-timer');
+    const toAr = n => n.replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+    setInterval(() => {
+      secs = secs > 0 ? secs - 1 : 599;
+      const m = String(Math.floor(secs / 60)).padStart(2, '0');
+      const s = String(secs % 60).padStart(2, '0');
+      el.textContent = toAr(`${m}:${s}`);
+    }, 1000);
+  })();
+
+  /* rotating comments */
+  (function () {
+    const pool = [
+      { name: 'سارة',  color: '#A32829', msg: 'اللون رائع 😍' },
+      { name: 'نورة',  color: '#7a1b1c', msg: 'طلبتها ✅' },
+      { name: 'منال',  color: '#d4a853', msg: 'هل يوجد أسود؟' },
+      { name: 'فاطمة', color: '#6b3333', msg: 'السعر ممتاز 🔥' },
+      { name: 'ريم',   color: '#A32829', msg: 'شحن كم يوم؟' },
+      { name: 'هنوف',  color: '#8b4513', msg: 'أجمل من الصورة 💕' },
+      { name: 'لجين',  color: '#7a1b1c', msg: 'وصلتني بكره ✨' },
+    ];
+    const container = document.getElementById('phone-comments');
+    let idx = 3;
+    setInterval(() => {
+      const c = pool[idx++ % pool.length];
+      const div = document.createElement('div');
+      div.className = 'comment-item';
+      div.innerHTML = `
+        <svg class="comment-avatar" viewBox="0 0 20 20">
+          <circle cx="10" cy="10" r="10" fill="${c.color}"/>
+          <text x="10" y="14" text-anchor="middle" font-size="10" fill="white">${c.name[0]}</text>
+        </svg>
+        <span><span class="comment-name">${c.name}</span>: ${c.msg}</span>`;
+      container.appendChild(div);
+      if (container.children.length > 3) container.removeChild(container.children[0]);
+    }, 2400);
+  })();
+
+  /* mobile menu */
+  const toggle  = document.getElementById('menuToggle');
+  const navMenu = document.getElementById('navMenu');
+  const overlay = document.getElementById('overlay');
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+      overlay.style.display = navMenu.classList.contains('open') ? 'block' : 'none';
+    });
+    overlay.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      overlay.style.display = 'none';
+    });
+  }
+</script>
+</body>
+</html>

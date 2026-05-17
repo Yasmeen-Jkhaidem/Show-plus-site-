@@ -69,14 +69,11 @@
   top: -18px;
   left: 50%;
   transform: translateX(-50%);
-
   font-size: 12px;
   font-weight: 600;
   color: #fff;
-
   padding: 5px 10px;
   border-radius: 999px;
-
   background:
     linear-gradient(#1a1a1a, #1a1a1a) padding-box,
     linear-gradient(270deg, #ff4d4d, #ff9a9e, #fad0c4, #ff4d4d) border-box;
@@ -87,6 +84,14 @@
 
   box-shadow: 0 4px 14px rgba(255, 77, 77, 0.3);
   white-space: nowrap;
+}
+
+.ltr .billing-btn.yearly::before {
+  content: "20% OFF";
+}
+
+.ltr .featured-container::before {
+  content: "The Most Popular for Most Merchants";
 }
 
 @keyframes gradientMove {
